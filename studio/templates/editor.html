@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AeroFrame X1 — Studio</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/studio.css') }}">
+<script type="importmap">
+{
+  "imports": {
+    "three": "/context/vendor/three.module.js",
+    "three/addons/": "/context/vendor/addons/",
+    "three/addons/controls/TransformControls.js": "{{ url_for('static', filename='vendor/addons/controls/TransformControls.js') }}"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <h1>AeroFrame X1 — Studio</h1>
+  <div class="topbar__right">
+    <span class="topbar__user">{{ username }}</span>
+    <form method="post" action="{{ url_for('views.logout') }}"><button class="btn btn--ghost" type="submit">Log out</button></form>
+  </div>
+</header>
+
+<main class="studio-layout">
+  <div class="stage">
+    <canvas id="canvas"></canvas>
+    <div class="hint">Drag to rotate · shift-drag or right-drag to pan · scroll to zoom · click a primitive to select it</div>
+  </div>
+
+  <aside class="panel">
+    <section class="panel__section" id="parts-list-section">
+      <h2>Custom parts</h2>
+      <ul class="parts-list" id="parts-list"></ul>
+      <button class="btn" id="new-part-btn">+ New part</button>
+    </section>
+
+    <section class="panel__section is-hidden" id="editor-section">
+      <h2 id="editor-heading">New part</h2>
+
+      <div class="field-grid">
+        <label>Key <input type="text" id="f-key" placeholder="my_new_part"></label>
+        <label>Name <input type="text" id="f-name" placeholder="My new part"></label>
+        <label>Material
+          <select id="f-material"></select>
+        </label>
+        <label>Process
+          <select id="f-process"></select>
+        </label>
+        <label>Quantity <input type="number" id="f-quantity" value="1" min="1"></label>
+        <label class="field-checkbox"><input type="checkbox" id="f-critical"> Critical (display only)</label>
+        <label id="f-mass-override-row" class="is-hidden">Mass override (g) <input type="number" id="f-mass-override" step="any"></label>
+      </div>
+      <label>Summary <textarea id="f-summary" rows="2"></textarea></label>
+      <label>Design notes (one per line) <textarea id="f-design-notes" rows="3"></textarea></label>
+
+      <h3>Shape</h3>
+      <p class="section-note">Add primitives, positioned relative to the part's own origin. The first primitive is the base; each one after it combines with a boolean operator.</p>
+      <div id="primitive-list"></div>
+      <div class="control__row">
+        <button class="btn btn--ghost" data-add-primitive="box">+ Box</button>
+        <button class="btn btn--ghost" data-add-primitive="cylinder">+ Cylinder</button>
+        <button class="btn btn--ghost" data-add-primitive="sphere">+ Sphere</button>
+      </div>
+
+      <h3>Placement in the vehicle</h3>
+      <p class="section-note">Absolute vehicle-space coordinates — fixed, not parametric. It will not follow an arm if the airframe's dimensions change later.</p>
+      <div class="field-grid">
+        <label>Position X (mm) <input type="number" id="f-pos-x" value="0" step="any"></label>
+        <label>Position Y (mm) <input type="number" id="f-pos-y" value="0" step="any"></label>
+        <label>Position Z (mm) <input type="number" id="f-pos-z" value="0" step="any"></label>
+        <label>Rotation X (deg) <input type="number" id="f-rot-x" value="0" step="any"></label>
+        <label>Rotation Y (deg) <input type="number" id="f-rot-y" value="0" step="any"></label>
+        <label>Rotation Z (deg) <input type="number" id="f-rot-z" value="0" step="any"></label>
+      </div>
+      <div class="control__row" id="gizmo-controls">
+        <button class="btn" data-gizmo-mode="off">Gizmo off</button>
+        <button class="btn btn--ghost" data-gizmo-mode="translate">Move</button>
+        <button class="btn btn--ghost" data-gizmo-mode="rotate">Rotate</button>
+      </div>
+
+      <div id="form-errors" class="form-errors is-hidden"></div>
+
+      <div class="control__row editor-actions">
+        <button class="btn" id="save-btn">Save</button>
+        <button class="btn btn--ghost" id="cancel-btn">Cancel</button>
+        <button class="btn btn--danger is-hidden" id="delete-btn">Delete</button>
+      </div>
+    </section>
+
+    <section class="panel__section">
+      <h2>Publish</h2>
+      <p class="section-note">Custom parts are saved instantly to custom_parts.json, but the read-only backdrop and the real published site only update on rebuild.</p>
+      <button class="btn" id="rebuild-btn">Rebuild (geometry only)</button>
+      <pre id="rebuild-output" class="rebuild-output is-hidden"></pre>
+    </section>
+  </aside>
+</main>
+
+<script type="module" src="{{ url_for('static', filename='js/studio.js') }}"></script>
+</body>
+</html>

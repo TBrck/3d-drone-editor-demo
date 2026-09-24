@@ -1,0 +1,171 @@
+{
+  "schema_version": "1.0",
+  "parts": [
+    {
+      "key": "camera_mount_plate",
+      "name": "Camera mount plate",
+      "material_key": "al6061",
+      "process_key": "cnc",
+      "quantity": 1,
+      "critical": false,
+      "mass_override_g": null,
+      "summary": "Small accessory plate on top of the frame, studio-authored as a proof that the pipeline handles custom parts end to end.",
+      "design_notes": [
+        "A box with a centre hole -- deliberately simple, to demonstrate the studio's primitive+boolean pipeline rather than to design a real camera mount."
+      ],
+      "shape": {
+        "op": "subtract",
+        "children": [
+          {
+            "op": "box",
+            "length_mm": 24,
+            "width_mm": 16,
+            "height_mm": 20,
+            "transform": {
+              "translate_mm": [
+                0,
+                0,
+                0
+              ],
+              "rotate_deg": [
+                0,
+                0,
+                0
+              ]
+            }
+          },
+          {
+            "op": "cylinder",
+            "radius_mm": 3,
+            "height_mm": 20,
+            "transform": {
+              "translate_mm": [
+                0,
+                0,
+                0
+              ],
+              "rotate_deg": [
+                0,
+                0,
+                0
+              ]
+            }
+          }
+        ]
+      },
+      "placement": {
+        "group": "custom",
+        "position_mm": [
+          0,
+          0,
+          42
+        ],
+        "rotation_deg": [
+          0,
+          0,
+          0
+        ],
+        "explode_dir": [
+          0,
+          0,
+          1
+        ],
+        "explode_rank": 1
+      }
+    },
+    {
+      "key": "base_plate_eyelet",
+      "name": "Base Plate Eyelet",
+      "material_key": "al6061",
+      "process_key": "cnc",
+      "quantity": 1,
+      "critical": false,
+      "mass_override_g": null,
+      "summary": "Eyelet in ring form to attach objects",
+      "design_notes": [
+        "Sphere with cylindric shape removed"
+      ],
+      "shape": {
+        "op": "subtract",
+        "children": [
+          {
+            "op": "subtract",
+            "children": [
+              {
+                "op": "cylinder",
+                "radius_mm": 9,
+                "height_mm": 4,
+                "transform": {
+                  "translate_mm": [
+                    0,
+                    0,
+                    -2
+                  ],
+                  "rotate_deg": [
+                    0,
+                    90,
+                    0
+                  ]
+                }
+              },
+              {
+                "op": "cylinder",
+                "radius_mm": 6,
+                "height_mm": 4,
+                "transform": {
+                  "translate_mm": [
+                    0,
+                    0,
+                    -2
+                  ],
+                  "rotate_deg": [
+                    0,
+                    90,
+                    0
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "op": "box",
+            "length_mm": 4,
+            "width_mm": 15,
+            "height_mm": 20,
+            "transform": {
+              "translate_mm": [
+                0,
+                0,
+                6
+              ],
+              "rotate_deg": [
+                90,
+                0,
+                0
+              ]
+            }
+          }
+        ]
+      },
+      "placement": {
+        "group": "custom",
+        "position_mm": [
+          0,
+          0,
+          0
+        ],
+        "rotation_deg": [
+          0,
+          0,
+          0
+        ],
+        "explode_dir": [
+          0,
+          0,
+          1
+        ],
+        "explode_rank": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AeroFrame X1 — Studio login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/studio.css') }}">
+</head>
+<body class="login-body">
+  <form class="login-card" method="post">
+    <h1>Parts &amp; Assembly Studio</h1>
+    <p class="login-note">Local, authenticated dev tool. Not the published site.</p>
+    {% if error %}<p class="login-error">{{ error }}</p>{% endif %}
+    <label>Username <input type="text" name="username" autocomplete="username" autofocus></label>
+    <label>Password <input type="password" name="password" autocomplete="current-password"></label>
+    <button class="btn" type="submit">Log in</button>
+    <p class="login-hint">Dummy credentials for now: admin / admin.</p>
+  </form>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Generated build output lands here and IS committed:
+#   drone.glb, manifest.json, preview.png,
+#   fea/*.glb, drawings/*.svg, downloads/*.step|stl|dxf
+#
+# Committed rather than built in CI because rebuilding needs a 400 MB OCCT
+# wheel plus gmsh, and because it guarantees the published page is exactly
+# what was tested locally. See .github/workflows/pages.yml for the reasoning.

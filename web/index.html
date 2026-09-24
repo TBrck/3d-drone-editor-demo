@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AeroFrame X1 — mechanical design study</title>
+<meta name="description" content="A 450 mm quadcopter airframe designed parametrically in Python: interactive 3D model, bill of materials, hand calculations and finite element results.">
+
+<!-- Open Graph: this link gets pasted into applications and messages, so the
+     preview card matters more than usual. Replace the URL once published. -->
+<meta property="og:title" content="AeroFrame X1 — mechanical design study">
+<meta property="og:description" content="Interactive quadcopter airframe: explode it, take it apart, read the analysis.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/preview.png">
+
+<link rel="stylesheet" href="css/style.css">
+
+<!-- three.js is vendored into web/vendor/ rather than loaded from a CDN, so
+     the page has no external runtime dependency and cannot be broken by
+     someone else's outage. See scripts/fetch_vendor.ps1. -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/": "./vendor/addons/"
+  }
+}
+</script>
+</head>
+<body>
+
+<!-- Loading state. Removed by main.js once the glb and manifest are in. -->
+<div id="loader" class="loader">
+  <div class="loader__bar"><div class="loader__fill" id="loader-fill"></div></div>
+  <p class="loader__text" id="loader-text">Loading model…</p>
+</div>
+
+<noscript>
+  <div class="fallback">
+    <h1>AeroFrame X1</h1>
+    <p>This page renders an interactive 3D model and needs JavaScript. The
+       underlying design is also available as
+       <a href="assets/downloads/aeroframe_x1_assembly.step">a STEP file</a>
+       and as <a href="assets/manifest.json">machine-readable JSON</a>.</p>
+  </div>
+</noscript>
+
+<header class="topbar">
+  <div class="topbar__title">
+    <h1>AeroFrame&nbsp;X1</h1>
+    <span class="topbar__sub">450&nbsp;mm quadcopter airframe · designed in code</span>
+  </div>
+  <nav class="topbar__tabs" role="tablist">
+    <button class="tab is-active" data-view="model"    role="tab">Model</button>
+    <button class="tab"           data-view="bom"      role="tab">Bill of materials</button>
+    <button class="tab"           data-view="analysis" role="tab">Analysis</button>
+    <button class="tab"           data-view="drawings" role="tab">Drawings</button>
+    <button class="tab"           data-view="about"    role="tab">About</button>
+  </nav>
+</header>
+
+<main class="layout">
+
+  <!-- ================= MODEL VIEW ================= -->
+  <section class="view is-active" data-view="model">
+
+    <div class="stage">
+      <canvas id="canvas"></canvas>
+
+      <!-- Guided tour. Advances through manifest.story steps. This is what a
+           visitor who does not know what to click sees first. -->
+      <div class="story" id="story">
+        <h2 class="story__title" id="story-title"></h2>
+        <p class="story__body" id="story-body"></p>
+        <div class="story__nav">
+          <button id="story-prev" class="btn btn--ghost">Back</button>
+          <span class="story__dots" id="story-dots"></span>
+          <button id="story-next" class="btn">Next</button>
+          <button id="story-exit" class="btn btn--ghost">Explore freely</button>
+        </div>
+      </div>
+
+      <!-- FEA legend, shown only when a stress overlay is active. -->
+      <div class="legend" id="fea-legend" hidden>
+        <span class="legend__label" id="legend-min">0</span>
+        <div class="legend__ramp"></div>
+        <span class="legend__label" id="legend-max">— MPa</span>
+        <span class="legend__note">von Mises</span>
+      </div>
+
+      <button id="reset-view" class="btn btn--ghost stage__reset" title="Return to the default view">Reset view</button>
+
+      <div class="hint" id="hint">Drag to rotate · shift-drag or right-drag to pan · scroll to zoom · click a part</div>
+    </div>
+
+    <aside class="panel">
+
+      <div class="control">
+        <label for="explode">Exploded view</label>
+        <input type="range" id="explode" min="0" max="100" value="0">
+      </div>
+
+      <div class="control">
+        <label for="section">Section plane</label>
+        <input type="range" id="section" min="0" max="100" value="100">
+        <div class="control__row">
+          <button class="chip" data-section-axis="x">X</button>
+          <button class="chip" data-section-axis="y">Y</button>
+          <button class="chip" data-section-axis="z">Z</button>
+          <button class="chip is-active" data-section-axis="off">Off</button>
+        </div>
+      </div>
+
+      <div class="control">
+        <label>Colour by</label>
+        <div class="control__row">
+          <button class="chip is-active" data-colour="material">Material</button>
+          <button class="chip" data-colour="process">Process</button>
+          <button class="chip" data-colour="stress">Stress</button>
+        </div>
+      </div>
+
+      <!-- Part tree, built from manifest.instances grouped by manifest group. -->
+      <div class="tree" id="tree"></div>
+
+      <!-- Detail panel for the selected part. Populated from manifest.parts. -->
+      <div class="detail" id="detail" hidden>
+        <button class="detail__close" id="detail-close" aria-label="Close">×</button>
+        <h3 class="detail__name" id="detail-name"></h3>
+        <p class="detail__summary" id="detail-summary"></p>
+        <dl class="detail__specs" id="detail-specs"></dl>
+        <h4>Design notes</h4>
+        <ul class="detail__notes" id="detail-notes"></ul>
+        <div class="detail__links" id="detail-links"></div>
+      </div>
+
+    </aside>
+  </section>
+
+  <!-- ================= OTHER VIEWS ================= -->
+  <!-- All three are rendered from manifest.json by web/js/report.js. -->
+  <section class="view" data-view="bom"><div class="doc" id="bom-root"></div></section>
+  <section class="view" data-view="analysis"><div class="doc" id="analysis-root"></div></section>
+  <section class="view" data-view="drawings"><div class="doc" id="drawings-root"></div></section>
+
+  <section class="view" data-view="about">
+    <div class="doc">
+      <h2>About this project</h2>
+      <p>
+        AeroFrame&nbsp;X1 is a design study, not a product. Every part on it was
+        modelled parametrically in Python using the OpenCASCADE geometry kernel;
+        every mass, stress and safety factor on these pages was computed from
+        that same geometry rather than typed in. Changing one number in the
+        parameter file regenerates the model, the bill of materials, the
+        drawings and the analysis together.
+      </p>
+
+      <h3>What it is meant to show</h3>
+      <ul>
+        <li>Designing mechanisms and electromechanical assemblies as a system, not as separate parts.</li>
+        <li>Choosing a manufacturing process per part, and then respecting that process's design rules.</li>
+        <li>Sizing parts with hand calculations first and confirming them with finite element analysis.</li>
+        <li>Producing the drawings and neutral CAD a supplier would actually need.</li>
+      </ul>
+
+      <h3>Honest limitations</h3>
+      <ul>
+        <li>The finite element work is linear-static on first-order tetrahedra. It is a comparison and screening tool here, not a certification analysis.</li>
+        <li>Bolted joints are modelled as fixed restraints. No contact, preload or friction is simulated.</li>
+        <li>Composite parts are treated as isotropic, which is reasonable for the tube in axial bending and wrong elsewhere.</li>
+        <li>Endurance is a first-order estimate from battery energy and is good to perhaps 20 %.</li>
+        <li>No part of this design has been built or flown.</li>
+      </ul>
+
+      <h3>Get the CAD</h3>
+      <p id="about-downloads"></p>
+
+      <h3>How it is built</h3>
+      <p id="about-provenance"></p>
+    </div>
+  </section>
+
+</main>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,5416 @@
+{
+  "meta": {
+    "schema_version": "1.0",
+    "name": "AeroFrame X1",
+    "revision": "A",
+    "built_at": "2026-08-21T12:13:28+02:00",
+    "git_commit": "d7e1c63",
+    "tool_versions": {
+      "drone_demo": "0.1.0",
+      "build123d": "0.11.1",
+      "trimesh": "5.0.0"
+    },
+    "explode_distance_mm": 120.0,
+    "scene": {
+      "triangles": 428332,
+      "nodes": 112,
+      "bytes": 1976856,
+      "bbox_min_m": [
+        -0.261707829602327,
+        -0.11465,
+        -0.261707829602327
+      ],
+      "bbox_max_m": [
+        0.261707829602327,
+        0.052000000000000005,
+        0.261707829602327
+      ]
+    }
+  },
+  "parts": {
+    "arm_tube": {
+      "key": "arm_tube",
+      "name": "Arm tube, 16 x 1.5 CFRP",
+      "material_key": "cfrp_tube",
+      "process_key": "stock",
+      "quantity": 4,
+      "critical": true,
+      "volume_mm3": 10241.246475510818,
+      "unit_mass_g": 15.873932037041769,
+      "total_mass_g": 63.495728148167075,
+      "mass_is_override": false,
+      "summary": "Pultruded carbon tube carrying the motor thrust and reaction torque back to the frame. The single most weight-critical part on the vehicle.",
+      "design_notes": [
+        "16 mm OD x 1.5 mm wall is the smallest standard section that keeps the root bending stress under a safety factor of 4 in hover.",
+        "A round section was chosen over square because the clamp can then grip on any clocking, which makes the motor tilt adjustable during flight testing without new parts.",
+        "The tube is never drilled. A hole would cut the load-carrying fibres and halve the section's bending capacity."
+      ],
+      "annotations": [
+        {
+          "title": "Why no bolt through the tube",
+          "body": "A through-bolt is the obvious way to fix a tube, and it is wrong here. Drilling severs the unidirectional fibres that carry the bending load, and the bolt crushes the thin wall. Both clamps grip on friction over a wide area instead.",
+          "at_mm": [
+            20.0,
+            0.0,
+            8.0
+          ],
+          "kind": "load"
+        }
+      ],
+      "drawing": null
+    },
+    "motor_mount": {
+      "key": "motor_mount",
+      "name": "Motor mount, machined",
+      "material_key": "al6061",
+      "process_key": "cnc",
+      "quantity": 4,
+      "critical": true,
+      "volume_mm3": 11301.745415569249,
+      "unit_mass_g": 30.51471262203697,
+      "total_mass_g": 122.05885048814788,
+      "mass_is_override": false,
+      "summary": "Takes the motor's thrust and torque into the arm tube through a split clamp. Machined from 6061-T6 billet.",
+      "design_notes": [
+        "Split collar rather than a bonded joint: the motor is a wear item and has to come off without heat or solvent.",
+        "The clamp screw is offset below the tube centreline so tightening it pulls the collar closed rather than prying it open.",
+        "All internal corners are R2 so a standard 4 mm end mill reaches them; nothing on the part needs a custom cutter.",
+        "Two setups: the bore is machined first and then used as the datum for the motor face, which keeps the two axes square to each other."
+      ],
+      "annotations": [
+        {
+          "title": "Thermal path",
+          "body": "The aluminium plate under the motor doubles as a heatsink. Its diameter is set by the motor can, not by strength \u2014 strength alone would allow a much smaller plate.",
+          "at_mm": [
+            0.0,
+            0.0,
+            14.0
+          ],
+          "kind": "interface"
+        },
+        {
+          "title": "Clamp slit",
+          "body": "The slit runs the full collar length so the grip is even end to end. A partial slit would clamp hard at the open end and barely at all at the closed end, and the tube would creep out under vibration.",
+          "at_mm": [
+            0.0,
+            0.0,
+            -9.0
+          ],
+          "kind": "dfm"
+        }
+      ],
+      "drawing": "drawings/motor_mount.svg"
+    },
+    "arm_clamp_upper": {
+      "key": "arm_clamp_upper",
+      "name": "Arm clamp, upper half",
+      "material_key": "al6061",
+      "process_key": "cnc",
+      "quantity": 4,
+      "critical": true,
+      "volume_mm3": 6086.332498049336,
+      "unit_mass_g": 16.433097744733207,
+      "total_mass_g": 65.73239097893283,
+      "mass_is_override": false,
+      "summary": "Upper half of the split clamp that anchors the arm to the frame plates.",
+      "design_notes": [
+        "The clamp face is 34 mm long, more than twice the tube diameter. The grip pressure is spread over enough area that the laminate never sees a local crush stress above 25 MPa.",
+        "Both halves are machined as a matched pair with a 0.4 mm gap left between them at nominal, so the bolts always have travel left to take up tube diameter tolerance.",
+        "The groove radius is 0.05 mm larger than the nominal tube radius. Cut it on size and the halves bottom out on each other before they grip."
+      ],
+      "annotations": [
+        {
+          "title": "Friction joint, sized by torque",
+          "body": "Two M3 bolts at 1.2 Nm give roughly 4 kN of combined clamp force (F = T/(K*d), K = 0.20). Against a friction coefficient of 0.15 that resists about 600 N of slip \u2014 far beyond the ~10 N a single motor produces at full thrust. See the Analysis tab for the full calculation, including the +/-30% the nut factor is uncertain by.",
+          "at_mm": [
+            0.0,
+            13.0,
+            4.0
+          ],
+          "kind": "load"
+        }
+      ],
+      "drawing": null
+    },
+    "arm_clamp_lower": {
+      "key": "arm_clamp_lower",
+      "name": "Arm clamp, lower half",
+      "material_key": "al6061",
+      "process_key": "cnc",
+      "quantity": 4,
+      "critical": true,
+      "volume_mm3": 8551.815879019432,
+      "unit_mass_g": 23.089902873352468,
+      "total_mass_g": 92.35961149340987,
+      "mass_is_override": false,
+      "summary": "Lower half of the split clamp. Also the structural tie between the arm and both frame plates.",
+      "design_notes": [
+        "The clamp face is 34 mm long, more than twice the tube diameter. The grip pressure is spread over enough area that the laminate never sees a local crush stress above 25 MPa.",
+        "Both halves are machined as a matched pair with a 0.4 mm gap left between them at nominal, so the bolts always have travel left to take up tube diameter tolerance.",
+        "The groove radius is 0.05 mm larger than the nominal tube radius. Cut it on size and the halves bottom out on each other before they grip.",
+        "Tapped bosses rather than through-holes with nuts: there is no access to the underside once the battery tray is fitted."
+      ],
+      "annotations": [],
+      "drawing": "drawings/arm_clamp_lower.svg"
+    },
+    "camera_mount_plate": {
+      "key": "camera_mount_plate",
+      "name": "Camera mount plate",
+      "material_key": "al6061",
+      "process_key": "cnc",
+      "quantity": 1,
+      "critical": false,
+      "volume_mm3": 7114.513322353838,
+      "unit_mass_g": 19.209185970355364,
+      "total_mass_g": 19.209185970355364,
+      "mass_is_override": false,
+      "summary": "Small accessory plate on top of the frame, studio-authored as a proof that the pipeline handles custom parts end to end.",
+      "design_notes": [
+        "A box with a centre hole -- deliberately simple, to demonstrate the studio's primitive+boolean pipeline rather than to design a real camera mount."
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "base_plate_eyelet": {
+      "key": "base_plate_eyelet",
+      "name": "Base Plate Eyelet",
+      "material_key": "al6061",
+      "process_key": "cnc",
+      "quantity": 1,
+      "critical": false,
+      "volume_mm3": 294.75261850667994,
+      "unit_mass_g": 0.7958320699680359,
+      "total_mass_g": 0.7958320699680359,
+      "mass_is_override": false,
+      "summary": "Eyelet in ring form to attach objects",
+      "design_notes": [
+        "Sphere with cylindric shape removed"
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "esc_bracket": {
+      "key": "esc_bracket",
+      "name": "ESC bracket, folded 1.5 mm Al",
+      "material_key": "al5052",
+      "process_key": "sheet_metal",
+      "quantity": 4,
+      "critical": false,
+      "volume_mm3": 2349.422135193936,
+      "unit_mass_g": 6.296451322319748,
+      "total_mass_g": 25.185805289278992,
+      "mass_is_override": false,
+      "summary": "Holds one speed controller in the propwash, where it gets cooled for free.",
+      "design_notes": [
+        "Folded, not machined: the part needs stiffness in one plane and nothing else, and folding costs about a tenth of machining it.",
+        "5052-H32, not 6061. 6061 sheet cracks on a 1t inside bend radius; 5052 takes it without trouble.",
+        "Bend relief slots at all four bend ends. Without them the corner material tears on the brake and the part is scrap.",
+        "Mounting holes are 4 mm from the bend tangent. Closer and they deform into ovals as the bend stretches the material around them."
+      ],
+      "annotations": [
+        {
+          "title": "Cooling by placement",
+          "body": "Mounting the ESC directly under the propeller puts it in the strongest airflow on the aircraft. That single placement decision removes any need for a heatsink.",
+          "at_mm": [
+            0.0,
+            0.0,
+            6.0
+          ],
+          "kind": "interface"
+        }
+      ],
+      "drawing": "drawings/esc_bracket.svg"
+    },
+    "battery_tray": {
+      "key": "battery_tray",
+      "name": "Battery tray, folded 1.5 mm Al",
+      "material_key": "al5052",
+      "process_key": "sheet_metal",
+      "quantity": 1,
+      "critical": false,
+      "volume_mm3": 18181.197952659342,
+      "unit_mass_g": 48.72561051312704,
+      "total_mass_g": 48.72561051312704,
+      "mass_is_override": false,
+      "summary": "Locates the battery and spreads its inertia load into the bottom plate.",
+      "design_notes": [
+        "The battery is a third of the all-up mass. In a hard landing it carries several times its own weight, so it is strapped, not taped, and the strap load goes into a folded wall rather than a hole in the laminate.",
+        "Fore-aft position of the tray is what trims the centre of gravity onto the rotor centroid. The slots let it move about 12 mm either way after the payload is fitted."
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "motor": {
+      "key": "motor",
+      "name": "Motor, 2216 880 kV",
+      "material_key": "cots",
+      "process_key": "purchased",
+      "quantity": 4,
+      "critical": false,
+      "volume_mm3": 11801.914150510922,
+      "unit_mass_g": 62.0,
+      "total_mass_g": 248.0,
+      "mass_is_override": true,
+      "summary": "Purchased outrunner. Modelled only to its interface envelope.",
+      "design_notes": [
+        "Drawn from the vendor's interface dimensions, not reverse engineered. Only the bolt pattern, boss and envelope matter.",
+        "880 kV on 4S with a 10 x 4.5 prop gives about 1050 g of static thrust per motor, which sets the thrust-to-weight figure in the analysis report."
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "battery": {
+      "key": "battery",
+      "name": "Battery, 4S 5000 mAh LiPo",
+      "material_key": "cots",
+      "process_key": "purchased",
+      "quantity": 1,
+      "critical": false,
+      "volume_mm3": 258729.60168588077,
+      "unit_mass_g": 530.0,
+      "total_mass_g": 530.0,
+      "mass_is_override": true,
+      "summary": "Modelled as a mass block so the centre of gravity calculation is honest.",
+      "design_notes": [
+        "Included in the CAD purely so the reported centre of gravity means something. Leaving the heaviest single item out of a CoG calculation makes the result worthless."
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "top_plate": {
+      "key": "top_plate",
+      "name": "Top plate, 2 mm CFRP",
+      "material_key": "cfrp_plate",
+      "process_key": "composite_cut",
+      "quantity": 1,
+      "critical": true,
+      "volume_mm3": 26073.48149498375,
+      "unit_mass_g": 39.11022224247562,
+      "total_mass_g": 39.11022224247562,
+      "mass_is_override": false,
+      "summary": "Upper shear panel of the frame box. Routed from 2 mm woven laminate.",
+      "design_notes": [
+        "The two plates and the six standoffs form a box that carries the arm reaction moments as a couple: tension in one plate, compression in the other. Neither plate is loaded in bending.",
+        "Lightening pockets are placed only where the shear flow is low \u2014 between the standoffs, never on the line between an arm clamp and the frame centre.",
+        "No countersunk holes. Countersinking a 2 mm laminate removes half the thickness at exactly the point the bolt loads it; a washer spreading the head load is lighter and much stronger."
+      ],
+      "annotations": [
+        {
+          "title": "Why two thin plates, not one thick one",
+          "body": "Separating the plates by 35 mm makes the frame roughly 300 times stiffer in torsion than the same mass of material in a single plate. Stiffness here is what keeps the flight controller's gyro reading the airframe and not a structural vibration mode.",
+          "at_mm": [
+            0.0,
+            0.0,
+            2.0
+          ],
+          "kind": "load"
+        }
+      ],
+      "drawing": "drawings/top_plate.svg"
+    },
+    "bottom_plate": {
+      "key": "bottom_plate",
+      "name": "Bottom plate, 2 mm CFRP",
+      "material_key": "cfrp_plate",
+      "process_key": "composite_cut",
+      "quantity": 1,
+      "critical": true,
+      "volume_mm3": 26841.50798932658,
+      "unit_mass_g": 40.262261983989866,
+      "total_mass_g": 40.262261983989866,
+      "mass_is_override": false,
+      "summary": "Lower shear panel. Also the mounting face for the battery tray.",
+      "design_notes": [
+        "Kept solid under the battery so the strap load spreads into the panel instead of tearing out at a hole edge.",
+        "Strap slots have a 3 mm radius at each end. A square-ended slot in a laminate is a delamination starter."
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "standoff": {
+      "key": "standoff",
+      "name": "Standoff, M3 x 35 hex",
+      "material_key": "al6061",
+      "process_key": "purchased",
+      "quantity": 6,
+      "critical": true,
+      "volume_mm3": 1106.1829360373672,
+      "unit_mass_g": 2.9866939273008914,
+      "total_mass_g": 17.92016356380535,
+      "mass_is_override": false,
+      "summary": "Sets the frame box height and carries the compression between the plates.",
+      "design_notes": [
+        "Catalogue part. Six of them rather than four: the extra pair sits on the pitch axis where the frame box would otherwise be free to parallelogram.",
+        "Hex section so it can be held while the bolts are torqued."
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "screw_m3x8": {
+      "key": "screw_m3x8",
+      "name": "Screw, M3 x 8 SHCS",
+      "material_key": "steel_a2",
+      "process_key": "purchased",
+      "quantity": 24,
+      "critical": false,
+      "volume_mm3": 123.61466763054234,
+      "unit_mass_g": 0.9765558742812845,
+      "total_mass_g": 23.43734098275083,
+      "mass_is_override": false,
+      "summary": "Motor and bracket fixings.",
+      "design_notes": [
+        "One thread size across the whole airframe. A field repair then needs one driver and one spares box, which matters far more than the few grams an optimised fastener schedule would save."
+      ],
+      "annotations": [],
+      "drawing": null
+    },
+    "screw_m3x12": {
+      "key": "screw_m3x12",
+      "name": "Screw, M3 x 12 SHCS",
+      "material_key": "steel_a2",
+      "process_key": "purchased",
+      "quantity": 40,
+      "critical": true,
+      "volume_mm3": 151.88900151285048,
+      "unit_mass_g": 1.1999231119515188,
+      "total_mass_g": 47.99692447806075,
+      "mass_is_override": false,
+      "summary": "Structural fixings: arm clamps, plate stack, standoffs.",
+      "design_notes": [
+        "A2-70 stainless, not the steel the cheap kits ship. Corrosion resistance matters on a vehicle that gets flown in wet grass.",
+        "Torqued to 1.2 Nm with thread lock. Under-torque is the failure mode here, not over-torque: a loose clamp lets the tube creep."
+      ],
+      "annotations": [
+        {
+          "title": "Preload is the design variable",
+          "body": "These bolts are never loaded in shear by design. Their job is to generate clamp force so the joint carries load by friction. Assembly torque is a specified engineering quantity here, not a fitter's judgement.",
+          "at_mm": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "kind": "tolerance"
+        }
+      ],
+      "drawing": null
+    },
+    "landing_leg": {
+      "key": "landing_leg",
+      "name": "Landing leg, printed PA12-CF",
+      "material_key": "pa12cf",
+      "process_key": "fdm",
+      "quantity": 4,
+      "critical": true,
+      "volume_mm3": 13897.615058362951,
+      "unit_mass_g": 14.73147196186473,
+      "total_mass_g": 58.92588784745892,
+      "mass_is_override": false,
+      "summary": "Absorbs the landing energy and is designed to be the first thing that breaks in a crash.",
+      "design_notes": [
+        "The tapered fuse section is not a weight saving. It fixes where a hard landing fails: a 4 EUR printed leg, replaceable in an hour, instead of a carbon arm or a motor bell.",
+        "Printed standing on the foot spigot. Layer lines then run across the bending load rather than along it, which is the difference between a leg that bends and one that shears at a layer line.",
+        "The snap collar means the legs come off without tools between flights, which is what actually gets done at a test site.",
+        "Whole part prints without support: no face overhangs more than 45 degrees, verified geometrically in the test suite."
+      ],
+      "annotations": [
+        {
+          "title": "Designed to break here",
+          "body": "The section is deliberately thinned to about 60 % over 30 mm. In a 0.5 m drop this section yields first and absorbs the energy, protecting the arm root behind it. Choosing the failure point is cheaper than trying to prevent failure everywhere.",
+          "at_mm": [
+            0.0,
+            8.0,
+            -50.0
+          ],
+          "kind": "load"
+        }
+      ],
+      "drawing": "drawings/landing_leg.svg"
+    },
+    "landing_foot": {
+      "key": "landing_foot",
+      "name": "Landing foot, moulded TPU",
+      "material_key": "tpu",
+      "process_key": "injection",
+      "quantity": 4,
+      "critical": false,
+      "volume_mm3": 2084.0670483756876,
+      "unit_mass_g": 2.521721128534582,
+      "total_mass_g": 10.086884514138328,
+      "mass_is_override": false,
+      "summary": "Soft contact pad. Press fits onto the leg spigot.",
+      "design_notes": [
+        "1.5 degrees of draft on every vertical wall, uniform 2 mm section, single parting line, no side actions \u2014 the cheapest mould that can make this shape.",
+        "0.15 mm interference on the spigot. In TPU that is a press fit that survives vibration but can still be pulled off by hand."
+      ],
+      "annotations": [
+        {
+          "title": "Uniform wall",
+          "body": "The wall is 2 mm everywhere. A thick spot would cool last, shrink, and leave a sink mark and a void; that is the single most common moulded-part defect and it is a design decision, not a process problem.",
+          "at_mm": [
+            0.0,
+            0.0,
+            -7.0
+          ],
+          "kind": "dfm"
+        }
+      ],
+      "drawing": null
+    },
+    "propeller": {
+      "key": "propeller",
+      "name": "Propeller, 10 x 4.5",
+      "material_key": "nylon_gf",
+      "process_key": "injection",
+      "quantity": 4,
+      "critical": false,
+      "volume_mm3": 3673.8076963343383,
+      "unit_mass_g": 4.996378467014701,
+      "total_mass_g": 19.985513868058803,
+      "mass_is_override": false,
+      "summary": "Moulded glass-filled nylon prop, drawn to a true constant-pitch law.",
+      "design_notes": [
+        "Blade angle follows beta = atan(pitch / 2*pi*r), so every station along the blade advances the same distance per revolution. That is what the '4.5' in '10 x 4.5' actually means.",
+        "Moulded in two halves off a single parting line down the blade chord, with the twist handled by the mould's shape rather than a side action.",
+        "The prop is shown for context. It is not a part this project claims to have designed aerodynamically."
+      ],
+      "annotations": [
+        {
+          "title": "Constant pitch, not constant angle",
+          "body": "The blade is much flatter at the tip than at the root. It has to be: the tip travels far further per revolution, so a smaller angle produces the same forward advance. Draw the blade at one fixed angle and the root stalls while the tip does nothing.",
+          "at_mm": [
+            95.0,
+            0.0,
+            4.0
+          ],
+          "kind": "load"
+        }
+      ],
+      "drawing": null
+    }
+  },
+  "instances": [
+    {
+      "node_id": "arm_clamp_upper__0",
+      "part_key": "arm_clamp_upper",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          51.0
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          51.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_clamp_lower__0",
+      "part_key": "arm_clamp_lower",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          51.0
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          51.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_tube__0",
+      "part_key": "arm_tube",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          51.0
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          51.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.7071067811865476,
+        0.7071067811865476,
+        0
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "motor_mount__0",
+      "part_key": "motor_mount",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          157.06601717798213
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          157.06601717798213
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.7071067811865476,
+        0.7071067811865476,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "motor__0",
+      "part_key": "motor",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          167.67261889578035
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          167.67261889578035
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          15.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "propeller__0",
+      "part_key": "propeller",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          167.67261889578035
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          167.67261889578035
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          37.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 4
+    },
+    {
+      "node_id": "esc_bracket__0",
+      "part_key": "esc_bracket",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          98.72970773009196
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          -8.659560562354934e-17,
+          98.72970773009196
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "landing_leg__0",
+      "part_key": "landing_leg",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          121.00357133746822
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          121.00357133746822
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "landing_foot__0",
+      "part_key": "landing_foot",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          106.72505365392414
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          135.2820890210123
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -114.65
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x8__0",
+      "part_key": "screw_m3x8",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          173.32947314527274
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          173.32947314527274
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__1",
+      "part_key": "screw_m3x8",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          162.01576464628795
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          162.01576464628795
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__2",
+      "part_key": "screw_m3x8",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          160.95510447450815
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          174.39013331705254
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__3",
+      "part_key": "screw_m3x8",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          174.39013331705254
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          160.95510447450815
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__4",
+      "part_key": "screw_m3x8",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          80.52170811453837
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          -8.659560562354934e-17,
+          95.0173971288626
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x8__5",
+      "part_key": "screw_m3x8",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          116.93770734564556
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          -8.659560562354934e-17,
+          102.44201833132134
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__0",
+      "part_key": "screw_m3x12",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          41.80761184457488
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          60.19238815542512
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__1",
+      "part_key": "screw_m3x12",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          0.0,
+          60.19238815542512
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          0.0,
+          41.80761184457488
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__2",
+      "part_key": "screw_m3x12",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          38.27207793864214
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          -8.659560562354934e-17,
+          51.0
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__3",
+      "part_key": "screw_m3x12",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          51.0
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          -8.659560562354934e-17,
+          63.72792206135786
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__4",
+      "part_key": "screw_m3x12",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          51.0
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          -8.659560562354934e-17,
+          38.27207793864214
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__5",
+      "part_key": "screw_m3x12",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          63.72792206135786
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865476,
+          -8.659560562354934e-17,
+          51.0
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__6",
+      "part_key": "screw_m3x12",
+      "group": "arm_0",
+      "transform_mm": [
+        [
+          0.7071067811865476,
+          -4.329780281177467e-17,
+          0.7071067811865476,
+          167.67261889578035
+        ],
+        [
+          0.7071067811865476,
+          4.329780281177467e-17,
+          -0.7071067811865476,
+          167.67261889578035
+        ],
+        [
+          0.0,
+          1.0,
+          6.123233995736766e-17,
+          -9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.7071067811865476,
+        0.7071067811865476,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_clamp_upper__1",
+      "part_key": "arm_clamp_upper",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -50.99999999999999
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          51.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_clamp_lower__1",
+      "part_key": "arm_clamp_lower",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -50.99999999999999
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          51.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_tube__1",
+      "part_key": "arm_tube",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -50.99999999999999
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          51.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.7071067811865475,
+        0.7071067811865476,
+        0
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "motor_mount__1",
+      "part_key": "motor_mount",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -157.0660171779821
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          157.06601717798213
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.7071067811865475,
+        0.7071067811865476,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "motor__1",
+      "part_key": "motor",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -167.67261889578032
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          167.67261889578035
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          15.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "propeller__1",
+      "part_key": "propeller",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -167.67261889578032
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          167.67261889578035
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          37.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 4
+    },
+    {
+      "node_id": "esc_bracket__1",
+      "part_key": "esc_bracket",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          -98.72970773009195
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865475,
+          8.659560562354932e-17,
+          98.72970773009196
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "landing_leg__1",
+      "part_key": "landing_leg",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -121.0035713374682
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          121.00357133746822
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "landing_foot__1",
+      "part_key": "landing_foot",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -135.28208902101227
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          106.72505365392414
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -114.65
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x8__6",
+      "part_key": "screw_m3x8",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -173.32947314527271
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          173.32947314527274
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__7",
+      "part_key": "screw_m3x8",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -162.01576464628795
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          162.01576464628795
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__8",
+      "part_key": "screw_m3x8",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -174.39013331705252
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          160.95510447450815
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__9",
+      "part_key": "screw_m3x8",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -160.95510447450812
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          174.39013331705254
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__10",
+      "part_key": "screw_m3x8",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          -95.01739712886257
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865475,
+          8.659560562354932e-17,
+          80.52170811453837
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x8__11",
+      "part_key": "screw_m3x8",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          -102.44201833132132
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865475,
+          8.659560562354932e-17,
+          116.93770734564556
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__7",
+      "part_key": "screw_m3x12",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -60.192388155425114
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          41.80761184457488
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__8",
+      "part_key": "screw_m3x12",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -0.7071067811865476,
+          0.0,
+          -41.80761184457487
+        ],
+        [
+          0.7071067811865476,
+          -0.7071067811865475,
+          0.0,
+          60.19238815542512
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__9",
+      "part_key": "screw_m3x12",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          -50.99999999999999
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865475,
+          8.659560562354932e-17,
+          38.27207793864214
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__10",
+      "part_key": "screw_m3x12",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          -63.727922061357845
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865475,
+          8.659560562354932e-17,
+          51.0
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__11",
+      "part_key": "screw_m3x12",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          -38.27207793864214
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865475,
+          8.659560562354932e-17,
+          51.0
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__12",
+      "part_key": "screw_m3x12",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          0.7071067811865476,
+          8.659560562354934e-17,
+          -50.99999999999999
+        ],
+        [
+          0.7071067811865476,
+          0.7071067811865475,
+          8.659560562354932e-17,
+          63.72792206135786
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__13",
+      "part_key": "screw_m3x12",
+      "group": "arm_1",
+      "transform_mm": [
+        [
+          -0.7071067811865475,
+          -4.329780281177467e-17,
+          0.7071067811865476,
+          -167.67261889578032
+        ],
+        [
+          0.7071067811865476,
+          -4.329780281177466e-17,
+          0.7071067811865475,
+          167.67261889578035
+        ],
+        [
+          0.0,
+          1.0,
+          6.123233995736766e-17,
+          -9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.7071067811865476,
+        -0.7071067811865475,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_clamp_upper__2",
+      "part_key": "arm_clamp_upper",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -51.000000000000014
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -50.99999999999999
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_clamp_lower__2",
+      "part_key": "arm_clamp_lower",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -51.000000000000014
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -50.99999999999999
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_tube__2",
+      "part_key": "arm_tube",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -51.000000000000014
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -50.99999999999999
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.7071067811865477,
+        -0.7071067811865475,
+        0
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "motor_mount__2",
+      "part_key": "motor_mount",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -157.06601717798216
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -157.0660171779821
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        -0.7071067811865477,
+        -0.7071067811865475,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "motor__2",
+      "part_key": "motor",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -167.67261889578037
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -167.67261889578032
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          15.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "propeller__2",
+      "part_key": "propeller",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -167.67261889578037
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -167.67261889578032
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          37.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 4
+    },
+    {
+      "node_id": "esc_bracket__2",
+      "part_key": "esc_bracket",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -8.659560562354932e-17,
+          -98.72970773009197
+        ],
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          8.659560562354935e-17,
+          -98.72970773009195
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "landing_leg__2",
+      "part_key": "landing_leg",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -121.00357133746823
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -121.0035713374682
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "landing_foot__2",
+      "part_key": "landing_foot",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -106.72505365392416
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -135.28208902101227
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -114.65
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x8__12",
+      "part_key": "screw_m3x8",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -173.32947314527274
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -173.32947314527271
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__13",
+      "part_key": "screw_m3x8",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -162.015764646288
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -162.01576464628795
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__14",
+      "part_key": "screw_m3x8",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -160.95510447450818
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -174.39013331705252
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__15",
+      "part_key": "screw_m3x8",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -174.39013331705257
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -160.95510447450812
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__16",
+      "part_key": "screw_m3x8",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -8.659560562354932e-17,
+          -80.52170811453838
+        ],
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          8.659560562354935e-17,
+          -95.01739712886257
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x8__17",
+      "part_key": "screw_m3x8",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -8.659560562354932e-17,
+          -116.93770734564558
+        ],
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          8.659560562354935e-17,
+          -102.44201833132132
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__14",
+      "part_key": "screw_m3x12",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -41.80761184457489
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -60.192388155425114
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__15",
+      "part_key": "screw_m3x12",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          0.7071067811865475,
+          0.0,
+          -60.192388155425135
+        ],
+        [
+          -0.7071067811865475,
+          -0.7071067811865477,
+          0.0,
+          -41.80761184457487
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__16",
+      "part_key": "screw_m3x12",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -8.659560562354932e-17,
+          -38.272077938642155
+        ],
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          8.659560562354935e-17,
+          -50.99999999999999
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__17",
+      "part_key": "screw_m3x12",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -8.659560562354932e-17,
+          -51.000000000000014
+        ],
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          8.659560562354935e-17,
+          -63.72792206135785
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__18",
+      "part_key": "screw_m3x12",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -8.659560562354932e-17,
+          -51.000000000000014
+        ],
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          8.659560562354935e-17,
+          -38.272077938642134
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__19",
+      "part_key": "screw_m3x12",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          -0.7071067811865475,
+          -8.659560562354932e-17,
+          -63.72792206135787
+        ],
+        [
+          -0.7071067811865475,
+          0.7071067811865477,
+          8.659560562354935e-17,
+          -50.99999999999999
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        -0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__20",
+      "part_key": "screw_m3x12",
+      "group": "arm_2",
+      "transform_mm": [
+        [
+          -0.7071067811865477,
+          4.329780281177466e-17,
+          -0.7071067811865475,
+          -167.67261889578037
+        ],
+        [
+          -0.7071067811865475,
+          -4.3297802811774677e-17,
+          0.7071067811865477,
+          -167.67261889578032
+        ],
+        [
+          0.0,
+          1.0,
+          6.123233995736766e-17,
+          -9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.7071067811865475,
+        -0.7071067811865477,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_clamp_upper__3",
+      "part_key": "arm_clamp_upper",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          50.999999999999986
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -51.000000000000014
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_clamp_lower__3",
+      "part_key": "arm_clamp_lower",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          50.999999999999986
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -51.000000000000014
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "arm_tube__3",
+      "part_key": "arm_tube",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          50.999999999999986
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -51.000000000000014
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.7071067811865474,
+        -0.7071067811865477,
+        0
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "motor_mount__3",
+      "part_key": "motor_mount",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          157.06601717798208
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -157.06601717798216
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.7071067811865474,
+        -0.7071067811865477,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "motor__3",
+      "part_key": "motor",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          167.67261889578032
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -167.67261889578037
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          15.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "propeller__3",
+      "part_key": "propeller",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          167.67261889578032
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -167.67261889578037
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          37.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 4
+    },
+    {
+      "node_id": "esc_bracket__3",
+      "part_key": "esc_bracket",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          -0.7071067811865477,
+          -8.659560562354935e-17,
+          98.72970773009193
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865474,
+          -8.65956056235493e-17,
+          -98.72970773009197
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "landing_leg__3",
+      "part_key": "landing_leg",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          121.00357133746817
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -121.00357133746823
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "landing_foot__3",
+      "part_key": "landing_foot",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          135.28208902101227
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -106.72505365392416
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -114.65
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x8__18",
+      "part_key": "screw_m3x8",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          173.3294731452727
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -173.32947314527274
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__19",
+      "part_key": "screw_m3x8",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          162.01576464628792
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -162.015764646288
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__20",
+      "part_key": "screw_m3x8",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          174.39013331705252
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -160.95510447450818
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__21",
+      "part_key": "screw_m3x8",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          160.95510447450812
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -174.39013331705257
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          21.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 5
+    },
+    {
+      "node_id": "screw_m3x8__22",
+      "part_key": "screw_m3x8",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          -0.7071067811865477,
+          -8.659560562354935e-17,
+          95.01739712886257
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865474,
+          -8.65956056235493e-17,
+          -80.52170811453838
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x8__23",
+      "part_key": "screw_m3x8",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          -0.7071067811865477,
+          -8.659560562354935e-17,
+          102.4420183313213
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865474,
+          -8.65956056235493e-17,
+          -116.93770734564558
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          -9.5
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__21",
+      "part_key": "screw_m3x12",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          60.19238815542511
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -41.8076118445749
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__22",
+      "part_key": "screw_m3x12",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          0.7071067811865477,
+          0.0,
+          41.807611844574865
+        ],
+        [
+          -0.7071067811865477,
+          0.7071067811865474,
+          0.0,
+          -60.19238815542513
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        1
+      ],
+      "explode_rank": 3
+    },
+    {
+      "node_id": "screw_m3x12__23",
+      "part_key": "screw_m3x12",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          -0.7071067811865477,
+          -8.659560562354935e-17,
+          50.999999999999986
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865474,
+          -8.65956056235493e-17,
+          -38.272077938642155
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__24",
+      "part_key": "screw_m3x12",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          -0.7071067811865477,
+          -8.659560562354935e-17,
+          63.727922061357845
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865474,
+          -8.65956056235493e-17,
+          -51.000000000000014
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__25",
+      "part_key": "screw_m3x12",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          -0.7071067811865477,
+          -8.659560562354935e-17,
+          38.27207793864213
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865474,
+          -8.65956056235493e-17,
+          -51.000000000000014
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__26",
+      "part_key": "screw_m3x12",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          -0.7071067811865477,
+          -8.659560562354935e-17,
+          50.999999999999986
+        ],
+        [
+          -0.7071067811865477,
+          -0.7071067811865474,
+          -8.65956056235493e-17,
+          -63.72792206135787
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          14.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.0,
+        0.0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__27",
+      "part_key": "screw_m3x12",
+      "group": "arm_3",
+      "transform_mm": [
+        [
+          0.7071067811865474,
+          4.3297802811774677e-17,
+          -0.7071067811865477,
+          167.67261889578032
+        ],
+        [
+          -0.7071067811865477,
+          4.329780281177465e-17,
+          -0.7071067811865474,
+          -167.67261889578037
+        ],
+        [
+          0.0,
+          1.0,
+          6.123233995736766e-17,
+          -9.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0.7071067811865477,
+        0.7071067811865474,
+        0
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "bottom_plate__0",
+      "part_key": "bottom_plate",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "top_plate__0",
+      "part_key": "top_plate",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          38.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "standoff__0",
+      "part_key": "standoff",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          17.78504745293478
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          48.86401628086723
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__28",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          17.78504745293478
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          48.86401628086723
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__29",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          17.78504745293478
+        ],
+        [
+          0.0,
+          -1.0,
+          -1.2246467991473532e-16,
+          48.86401628086723
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "standoff__1",
+      "part_key": "standoff",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          3.184081677783118e-15
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          52.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__30",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          3.184081677783118e-15
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          52.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__31",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          3.184081677783118e-15
+        ],
+        [
+          0.0,
+          -1.0,
+          -1.2246467991473532e-16,
+          52.0
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "standoff__2",
+      "part_key": "standoff",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.785047452934773
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          48.86401628086724
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__32",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.785047452934773
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          48.86401628086724
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__33",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.785047452934773
+        ],
+        [
+          0.0,
+          -1.0,
+          -1.2246467991473532e-16,
+          48.86401628086724
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "standoff__3",
+      "part_key": "standoff",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.785047452934766
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -48.86401628086724
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__34",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.785047452934766
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -48.86401628086724
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__35",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -17.785047452934766
+        ],
+        [
+          0.0,
+          -1.0,
+          -1.2246467991473532e-16,
+          -48.86401628086724
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "standoff__4",
+      "part_key": "standoff",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -9.552245033349354e-15
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -52.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__36",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -9.552245033349354e-15
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -52.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__37",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          -9.552245033349354e-15
+        ],
+        [
+          0.0,
+          -1.0,
+          -1.2246467991473532e-16,
+          -52.0
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "standoff__5",
+      "part_key": "standoff",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          17.785047452934787
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -48.86401628086723
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "screw_m3x12__38",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          17.785047452934787
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          -48.86401628086723
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          -2.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "screw_m3x12__39",
+      "part_key": "screw_m3x12",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          17.785047452934787
+        ],
+        [
+          0.0,
+          -1.0,
+          -1.2246467991473532e-16,
+          -48.86401628086723
+        ],
+        [
+          0.0,
+          1.2246467991473532e-16,
+          -1.0,
+          40.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "battery_tray__0",
+      "part_key": "battery_tray",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "battery__0",
+      "part_key": "battery",
+      "group": "frame",
+      "transform_mm": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          1.6
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        -1
+      ],
+      "explode_rank": 2
+    },
+    {
+      "node_id": "camera_mount_plate__0",
+      "part_key": "camera_mount_plate",
+      "group": "custom",
+      "transform_mm": [
+        [
+          1.0,
+          -0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          -0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          42.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    },
+    {
+      "node_id": "base_plate_eyelet__0",
+      "part_key": "base_plate_eyelet",
+      "group": "custom",
+      "transform_mm": [
+        [
+          1.0,
+          -0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          -0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "explode_dir": [
+        0,
+        0,
+        1
+      ],
+      "explode_rank": 1
+    }
+  ],
+  "materials": {
+    "al6061": {
+      "key": "al6061",
+      "name": "Aluminium 6061-T6",
+      "density_g_cm3": 2.7,
+      "youngs_modulus_mpa": 68900.0,
+      "poisson_ratio": 0.33,
+      "yield_mpa": 276.0,
+      "colour": "#b8bdc4",
+      "metalness": 0.95,
+      "roughness": 0.35,
+      "brittle": false,
+      "cost_per_kg_eur": 9.0,
+      "notes": "Chosen for the machined brackets: good strength-to-weight, excellent machinability, anodises for corrosion protection.",
+      "source": "MatWeb 6061-T6 typical values"
+    },
+    "al5052": {
+      "key": "al5052",
+      "name": "Aluminium 5052-H32",
+      "density_g_cm3": 2.68,
+      "youngs_modulus_mpa": 70300.0,
+      "poisson_ratio": 0.33,
+      "yield_mpa": 193.0,
+      "colour": "#c9ced4",
+      "metalness": 0.9,
+      "roughness": 0.45,
+      "brittle": false,
+      "cost_per_kg_eur": 7.0,
+      "notes": "Sheet metal alloy: far better bend ductility than 6061, which cracks on tight bends. Used for every folded bracket.",
+      "source": "ASM Aerospace Specification Metals, 5052-H32"
+    },
+    "cfrp_tube": {
+      "key": "cfrp_tube",
+      "name": "CFRP, pultruded tube (UD)",
+      "density_g_cm3": 1.55,
+      "youngs_modulus_mpa": 135000.0,
+      "poisson_ratio": 0.3,
+      "yield_mpa": 1200.0,
+      "colour": "#23262b",
+      "metalness": 0.15,
+      "roughness": 0.3,
+      "brittle": true,
+      "cost_per_kg_eur": 85.0,
+      "notes": "Axial modulus of a unidirectional pultrusion. Stiff and light along the arm, weak transversely \u2014 hence the wide split clamps instead of a through-bolt, which would crush and delaminate it.",
+      "source": "Toray T700 / typical pultrusion datasheet, axial direction"
+    },
+    "cfrp_plate": {
+      "key": "cfrp_plate",
+      "name": "CFRP, 2 mm woven laminate",
+      "density_g_cm3": 1.5,
+      "youngs_modulus_mpa": 60000.0,
+      "poisson_ratio": 0.1,
+      "yield_mpa": 600.0,
+      "colour": "#1b1e22",
+      "metalness": 0.1,
+      "roughness": 0.4,
+      "brittle": true,
+      "cost_per_kg_eur": 120.0,
+      "notes": "3K twill, quasi-isotropic layup. In-plane properties only \u2014 the plates are loaded in their plane by design.",
+      "source": "Typical 3K 2x2 twill prepreg laminate properties"
+    },
+    "pa12cf": {
+      "key": "pa12cf",
+      "name": "PA12-CF (FDM printed)",
+      "density_g_cm3": 1.06,
+      "youngs_modulus_mpa": 4800.0,
+      "poisson_ratio": 0.38,
+      "yield_mpa": 72.0,
+      "colour": "#3a3f45",
+      "metalness": 0.0,
+      "roughness": 0.85,
+      "brittle": false,
+      "cost_per_kg_eur": 95.0,
+      "notes": "Printed legs: tough, and the anisotropy is acceptable because the leg is loaded mainly along the print's strong in-plane direction. Layer adhesion assumed at 60 % of in-plane strength.",
+      "source": "Vendor datasheet class average for CF-filled PA12"
+    },
+    "tpu": {
+      "key": "tpu",
+      "name": "TPU 95A (injection moulded)",
+      "density_g_cm3": 1.21,
+      "youngs_modulus_mpa": 26.0,
+      "poisson_ratio": 0.48,
+      "yield_mpa": 9.0,
+      "colour": "#16181b",
+      "metalness": 0.0,
+      "roughness": 0.95,
+      "brittle": false,
+      "cost_per_kg_eur": 12.0,
+      "notes": "Feet only. Soft enough to absorb landing energy and cheap to mould in the quantities a production drone would need.",
+      "source": "Typical TPU 95A shore-A grade"
+    },
+    "nylon_gf": {
+      "key": "nylon_gf",
+      "name": "PA6-GF30 (injection moulded)",
+      "density_g_cm3": 1.36,
+      "youngs_modulus_mpa": 9000.0,
+      "poisson_ratio": 0.35,
+      "yield_mpa": 160.0,
+      "colour": "#2a2d31",
+      "metalness": 0.0,
+      "roughness": 0.55,
+      "brittle": false,
+      "cost_per_kg_eur": 6.0,
+      "notes": "Standard propeller material: stiff, fatigue tolerant, mouldable.",
+      "source": "Typical PA6 30 % glass fill"
+    },
+    "steel_a2": {
+      "key": "steel_a2",
+      "name": "Stainless A2-70 (fasteners)",
+      "density_g_cm3": 7.9,
+      "youngs_modulus_mpa": 193000.0,
+      "poisson_ratio": 0.3,
+      "yield_mpa": 450.0,
+      "colour": "#8e949b",
+      "metalness": 1.0,
+      "roughness": 0.25,
+      "brittle": false,
+      "cost_per_kg_eur": 15.0,
+      "notes": "ISO 4762 socket head cap screws, property class A2-70.",
+      "source": "ISO 3506-1"
+    },
+    "cots": {
+      "key": "cots",
+      "name": "Purchased assembly",
+      "density_g_cm3": 0.0,
+      "youngs_modulus_mpa": 0.0,
+      "poisson_ratio": 0.0,
+      "yield_mpa": 0.0,
+      "colour": "#4a4f57",
+      "metalness": 0.6,
+      "roughness": 0.5,
+      "brittle": false,
+      "cost_per_kg_eur": 0.0,
+      "notes": "Motors and the battery are bought in. Their mass is taken from the vendor figure in config.py, not from the CAD volume.",
+      "source": "Vendor data"
+    }
+  },
+  "processes": {
+    "cnc": {
+      "key": "cnc",
+      "name": "CNC milling, 3-axis",
+      "rationale": "The load-bearing brackets need tight bores and flat mating faces. At prototype volumes machining beats tooling up a mould.",
+      "design_rules": [
+        "All internal corners filleted to R2 so a 4 mm end mill reaches them.",
+        "No pocket deeper than 4x its width \u2014 avoids long, chattering tools.",
+        "All features reachable from two setups; the collar bore is the datum.",
+        "0.5 mm chamfer on every exposed edge for deburring and handling."
+      ],
+      "typical_tolerance_mm": 0.05,
+      "lead_time_days": 7,
+      "setup_cost_eur": 120.0
+    },
+    "sheet_metal": {
+      "key": "sheet_metal",
+      "name": "Sheet metal, laser cut and press braked",
+      "rationale": "Brackets that only need stiffness in one plane are far cheaper folded from 1.5 mm sheet than machined from solid.",
+      "design_rules": [
+        "Inside bend radius equals material thickness (1.5 mm) for 5052.",
+        "Bend relief slots at every corner to stop tearing at the bend line.",
+        "Holes kept at least 3 mm from the bend tangent so they stay round.",
+        "K-factor 0.38 used for the flat pattern development."
+      ],
+      "typical_tolerance_mm": 0.3,
+      "lead_time_days": 5,
+      "setup_cost_eur": 60.0
+    },
+    "fdm": {
+      "key": "fdm",
+      "name": "FDM 3D printing",
+      "rationale": "The legs are the part most likely to change between test flights, and the part most likely to be destroyed. Printing makes an iteration cost an afternoon instead of a week.",
+      "design_rules": [
+        "No overhang steeper than 45 deg \u2014 the whole leg prints unsupported.",
+        "Walls a multiple of the 0.4 mm nozzle width (3 perimeters = 1.2 mm).",
+        "Print orientation chosen so layer lines run across, not along, the load.",
+        "Deliberate thin section at the fuse: this part is meant to fail first."
+      ],
+      "typical_tolerance_mm": 0.2,
+      "lead_time_days": 1,
+      "setup_cost_eur": 0.0
+    },
+    "injection": {
+      "key": "injection",
+      "name": "Injection moulding",
+      "rationale": "Feet and propellers are the high-volume, geometry-stable parts. They justify tooling once the design freezes.",
+      "design_rules": [
+        "1.5 deg draft on every face parallel to the pull direction.",
+        "Uniform 2 mm nominal wall to avoid sink marks and voids.",
+        "Two-plate mould, single parting line, no side actions needed.",
+        "Ribs kept to 60 % of the adjoining wall thickness."
+      ],
+      "typical_tolerance_mm": 0.1,
+      "lead_time_days": 35,
+      "setup_cost_eur": 8000.0
+    },
+    "composite_cut": {
+      "key": "composite_cut",
+      "name": "CFRP sheet, CNC routed",
+      "rationale": "Plates are 2D profiles in a stiff, light laminate. Routing a cured sheet gives the stiffness of composite at machining cost.",
+      "design_rules": [
+        "Diamond-coated compression router to stop delamination at the edges.",
+        "Minimum internal radius 3 mm \u2014 set by the cutter, not the design.",
+        "No countersinks in the laminate; loads are spread by washers instead."
+      ],
+      "typical_tolerance_mm": 0.2,
+      "lead_time_days": 6,
+      "setup_cost_eur": 90.0
+    },
+    "stock": {
+      "key": "stock",
+      "name": "Purchased stock, cut to length",
+      "rationale": "Pultruded tube and standoffs are commodity items; no reason to make them.",
+      "design_rules": [
+        "Tube cut with an abrasive wheel and the ends sealed against moisture ingress.",
+        "Length is the only controlled dimension."
+      ],
+      "typical_tolerance_mm": 0.5,
+      "lead_time_days": 2,
+      "setup_cost_eur": 0.0
+    },
+    "purchased": {
+      "key": "purchased",
+      "name": "Purchased component",
+      "rationale": "Motors, ESCs, battery and fasteners are catalogue parts.",
+      "design_rules": [
+        "Interface dimensions taken from the vendor drawing and frozen in config.py."
+      ],
+      "typical_tolerance_mm": 0.2,
+      "lead_time_days": 10,
+      "setup_cost_eur": 0.0
+    }
+  },
+  "bom": {
+    "rows": [
+      {
+        "part_key": "battery",
+        "name": "Battery, 4S 5000 mAh LiPo",
+        "material_key": "cots",
+        "process_key": "purchased",
+        "qty": 1,
+        "unit_mass_g": 530.0,
+        "total_mass_g": 530.0,
+        "mass_fraction": 0.3597395233384709
+      },
+      {
+        "part_key": "motor",
+        "name": "Motor, 2216 880 kV",
+        "material_key": "cots",
+        "process_key": "purchased",
+        "qty": 4,
+        "unit_mass_g": 62.0,
+        "total_mass_g": 248.0,
+        "mass_fraction": 0.16833094676969962
+      },
+      {
+        "part_key": "motor_mount",
+        "name": "Motor mount, machined",
+        "material_key": "al6061",
+        "process_key": "cnc",
+        "qty": 4,
+        "unit_mass_g": 30.51471262203697,
+        "total_mass_g": 122.05885048814788,
+        "mass_fraction": 0.08284791074310945
+      },
+      {
+        "part_key": "arm_clamp_lower",
+        "name": "Arm clamp, lower half",
+        "material_key": "al6061",
+        "process_key": "cnc",
+        "qty": 4,
+        "unit_mass_g": 23.089902873352468,
+        "total_mass_g": 92.35961149340987,
+        "mass_fraction": 0.0626894388950295
+      },
+      {
+        "part_key": "arm_clamp_upper",
+        "name": "Arm clamp, upper half",
+        "material_key": "al6061",
+        "process_key": "cnc",
+        "qty": 4,
+        "unit_mass_g": 16.433097744733207,
+        "total_mass_g": 65.73239097893283,
+        "mass_fraction": 0.0446161113182251
+      },
+      {
+        "part_key": "arm_tube",
+        "name": "Arm tube, 16 x 1.5 CFRP",
+        "material_key": "cfrp_tube",
+        "process_key": "stock",
+        "qty": 4,
+        "unit_mass_g": 15.873932037041769,
+        "total_mass_g": 63.495728148167075,
+        "mass_fraction": 0.04309796788311463
+      },
+      {
+        "part_key": "landing_leg",
+        "name": "Landing leg, printed PA12-CF",
+        "material_key": "pa12cf",
+        "process_key": "fdm",
+        "qty": 4,
+        "unit_mass_g": 14.73147196186473,
+        "total_mass_g": 58.92588784745892,
+        "mass_fraction": 0.03999617133309635
+      },
+      {
+        "part_key": "battery_tray",
+        "name": "Battery tray, folded 1.5 mm Al",
+        "material_key": "al5052",
+        "process_key": "sheet_metal",
+        "qty": 1,
+        "unit_mass_g": 48.72561051312704,
+        "total_mass_g": 48.72561051312704,
+        "mass_fraction": 0.03307269415163832
+      },
+      {
+        "part_key": "screw_m3x12",
+        "name": "Screw, M3 x 12 SHCS",
+        "material_key": "steel_a2",
+        "process_key": "purchased",
+        "qty": 40,
+        "unit_mass_g": 1.1999231119515188,
+        "total_mass_g": 47.99692447806075,
+        "mass_fraction": 0.03257809572349087
+      },
+      {
+        "part_key": "bottom_plate",
+        "name": "Bottom plate, 2 mm CFRP",
+        "material_key": "cfrp_plate",
+        "process_key": "composite_cut",
+        "qty": 1,
+        "unit_mass_g": 40.262261983989866,
+        "total_mass_g": 40.262261983989866,
+        "mass_fraction": 0.027328164027639913
+      },
+      {
+        "part_key": "top_plate",
+        "name": "Top plate, 2 mm CFRP",
+        "material_key": "cfrp_plate",
+        "process_key": "composite_cut",
+        "qty": 1,
+        "unit_mass_g": 39.11022224247562,
+        "total_mass_g": 39.11022224247562,
+        "mass_fraction": 0.02654621265503744
+      },
+      {
+        "part_key": "esc_bracket",
+        "name": "ESC bracket, folded 1.5 mm Al",
+        "material_key": "al5052",
+        "process_key": "sheet_metal",
+        "qty": 4,
+        "unit_mass_g": 6.296451322319748,
+        "total_mass_g": 25.185805289278992,
+        "mass_fraction": 0.01709496148992597
+      },
+      {
+        "part_key": "screw_m3x8",
+        "name": "Screw, M3 x 8 SHCS",
+        "material_key": "steel_a2",
+        "process_key": "purchased",
+        "qty": 24,
+        "unit_mass_g": 0.9765558742812845,
+        "total_mass_g": 23.43734098275083,
+        "mass_fraction": 0.0159081846668981
+      },
+      {
+        "part_key": "propeller",
+        "name": "Propeller, 10 x 4.5",
+        "material_key": "nylon_gf",
+        "process_key": "injection",
+        "qty": 4,
+        "unit_mass_g": 4.996378467014701,
+        "total_mass_g": 19.985513868058803,
+        "mass_fraction": 0.013565243835037499
+      },
+      {
+        "part_key": "camera_mount_plate",
+        "name": "Camera mount plate",
+        "material_key": "al6061",
+        "process_key": "cnc",
+        "qty": 1,
+        "unit_mass_g": 19.209185970355364,
+        "total_mass_g": 19.209185970355364,
+        "mass_fraction": 0.01303830831074657
+      },
+      {
+        "part_key": "standoff",
+        "name": "Standoff, M3 x 35 hex",
+        "material_key": "al6061",
+        "process_key": "purchased",
+        "qty": 6,
+        "unit_mass_g": 2.9866939273008914,
+        "total_mass_g": 17.92016356380535,
+        "mass_fraction": 0.012163379431303342
+      },
+      {
+        "part_key": "landing_foot",
+        "name": "Landing foot, moulded TPU",
+        "material_key": "tpu",
+        "process_key": "injection",
+        "qty": 4,
+        "unit_mass_g": 2.521721128534582,
+        "total_mass_g": 10.086884514138328,
+        "mass_fraction": 0.006846511371860993
+      },
+      {
+        "part_key": "base_plate_eyelet",
+        "name": "Base Plate Eyelet",
+        "material_key": "al6061",
+        "process_key": "cnc",
+        "qty": 1,
+        "unit_mass_g": 0.7958320699680359,
+        "total_mass_g": 0.7958320699680359,
+        "mass_fraction": 0.0005401740556750375
+      }
+    ],
+    "total_mass_g": 1473.288214432126
+  },
+  "analysis": {
+    "mass": {
+      "total_mass_g": 1473.288214432126,
+      "target_auw_g": 1500.0,
+      "cog_mm": [
+        2.986386210256643e-13,
+        3.5699835959534455e-12,
+        11.490580956138212
+      ],
+      "cog_offset_from_rotor_axis_mm": 3.583052092629757e-12,
+      "inertia_g_mm2": [
+        14843227.875671133,
+        14769467.09044196,
+        28216789.408482928
+      ],
+      "structural_fraction": 0.4583642860567915
+    },
+    "performance": {
+      "all_up_mass_g": 1473.288214432126,
+      "total_thrust_g": 4200.0,
+      "thrust_to_weight": 2.8507660340029775,
+      "hover_throttle": 0.35078290819812524,
+      "hover_endurance_min": 31.904365120013665,
+      "disc_loading_n_m2": 71.28383961193121
+    },
+    "checks": [
+      {
+        "key": "motor_bolt_shear",
+        "title": "Motor bolt shear, full throttle",
+        "formula": "tau = (Q/r/4) / A_shank,  Q ~ F*R/12",
+        "inputs": {
+          "F": [
+            10.2969825,
+            "N"
+          ],
+          "R_prop": [
+            127.0,
+            "mm"
+          ],
+          "r_bolts": [
+            8.0,
+            "mm"
+          ],
+          "A_shank": [
+            7.0685834705770345,
+            "mm^2"
+          ]
+        },
+        "applied": 0.4817814567206696,
+        "allowable": 270.0,
+        "unit": "MPa",
+        "target_sf": 3.0,
+        "safety_factor": 560.420074773742,
+        "passes": true,
+        "note": "Reaction torque uses a generic thrust-to-torque ratio (F*R/12), not a measured value for this propeller \u2014 a coarse estimate, not a manufacturer figure."
+      },
+      {
+        "key": "arm_root_bending_hover",
+        "title": "Arm tube root bending \u2014 Steady hover",
+        "formula": "sigma = M*c/I,  M = F*L,  I = pi/64*(D^4-d^4)",
+        "inputs": {
+          "F": [
+            3.612005467015202,
+            "N"
+          ],
+          "L": [
+            165.0,
+            "mm"
+          ],
+          "D": [
+            16.0,
+            "mm"
+          ],
+          "d": [
+            13.0,
+            "mm"
+          ]
+        },
+        "applied": 2.6269042841930723,
+        "allowable": 1200.0,
+        "unit": "MPa",
+        "target_sf": 4.0,
+        "safety_factor": 456.8114671024696,
+        "passes": true,
+        "note": "Allowable is the CFRP's ultimate axial strength, not a yield point \u2014 the material is brittle, so there is no useful yield."
+      },
+      {
+        "key": "arm_root_bending_max_thrust",
+        "title": "Arm tube root bending \u2014 Full throttle climb",
+        "formula": "sigma = M*c/I,  M = F*L,  I = pi/64*(D^4-d^4)",
+        "inputs": {
+          "F": [
+            10.2969825,
+            "N"
+          ],
+          "L": [
+            165.0,
+            "mm"
+          ],
+          "D": [
+            16.0,
+            "mm"
+          ],
+          "d": [
+            13.0,
+            "mm"
+          ]
+        },
+        "applied": 7.488689507954516,
+        "allowable": 1200.0,
+        "unit": "MPa",
+        "target_sf": 2.0,
+        "safety_factor": 160.24165492845648,
+        "passes": true,
+        "note": "Allowable is the CFRP's ultimate axial strength, not a yield point \u2014 the material is brittle, so there is no useful yield."
+      },
+      {
+        "key": "arm_tip_deflection_hover",
+        "title": "Arm tip deflection \u2014 Steady hover",
+        "formula": "delta = F*L^3 / (3*E*I)",
+        "inputs": {
+          "F": [
+            3.612005467015202,
+            "N"
+          ],
+          "L": [
+            165.0,
+            "mm"
+          ],
+          "E": [
+            135000.0,
+            "MPa"
+          ],
+          "I": [
+            1815.0060682262906,
+            "mm^4"
+          ]
+        },
+        "applied": 0.02207329294356679,
+        "allowable": 1.1,
+        "unit": "mm",
+        "target_sf": 1.5,
+        "safety_factor": 49.83397822936032,
+        "passes": true,
+        "note": "Allowable set at span/150, a stiffness (serviceability) limit, not a strength one."
+      },
+      {
+        "key": "arm_tip_deflection_max_thrust",
+        "title": "Arm tip deflection \u2014 Full throttle climb",
+        "formula": "delta = F*L^3 / (3*E*I)",
+        "inputs": {
+          "F": [
+            10.2969825,
+            "N"
+          ],
+          "L": [
+            165.0,
+            "mm"
+          ],
+          "E": [
+            135000.0,
+            "MPa"
+          ],
+          "I": [
+            1815.0060682262906,
+            "mm^4"
+          ]
+        },
+        "applied": 0.06292579378211781,
+        "allowable": 1.1,
+        "unit": "mm",
+        "target_sf": 1.5,
+        "safety_factor": 17.48090781037707,
+        "passes": true,
+        "note": "Allowable set at span/150, a stiffness (serviceability) limit, not a strength one."
+      },
+      {
+        "key": "arm_first_mode_hz",
+        "title": "Arm first bending mode vs. blade pass",
+        "formula": "f = 1/(2*pi) * sqrt(k/m_eff),  k = 3*E*I/L^3",
+        "inputs": {
+          "E": [
+            135000.0,
+            "MPa"
+          ],
+          "I": [
+            1815.0060682262906,
+            "mm^4"
+          ],
+          "L": [
+            165.0,
+            "mm"
+          ],
+          "m_eff": [
+            70.6473828355343,
+            "g"
+          ]
+        },
+        "applied": 456.85965963723834,
+        "allowable": 242.22152200070073,
+        "unit": "Hz",
+        "target_sf": 1.0,
+        "safety_factor": 0.5301880279669092,
+        "passes": false,
+        "note": "Estimated hover RPM (4569) comes from kv x pack voltage x hover throttle, a rough approximation \u2014 real RPM depends on load too. Target is 3x blade-pass frequency clear of the structural mode."
+      },
+      {
+        "key": "clamp_slip_hover",
+        "title": "Clamp friction vs. slip \u2014 Steady hover",
+        "formula": "F_preload = T/(K*d),  F_friction = mu * (2*F_preload)",
+        "inputs": {
+          "T": [
+            1.2,
+            "N*m"
+          ],
+          "K": [
+            0.2,
+            "-"
+          ],
+          "d": [
+            3.0,
+            "mm"
+          ],
+          "mu": [
+            0.15,
+            "-"
+          ]
+        },
+        "applied": 3.612005467015202,
+        "allowable": 599.9999999999999,
+        "unit": "N",
+        "target_sf": 4.0,
+        "safety_factor": 166.11270538740706,
+        "passes": true,
+        "note": "The nut factor K is uncertain by roughly +/-30% for a lightly lubricated joint. This check should be confirmed by a pull-test on the real assembly, not trusted on the calculation alone."
+      },
+      {
+        "key": "clamp_slip_max_thrust",
+        "title": "Clamp friction vs. slip \u2014 Full throttle climb",
+        "formula": "F_preload = T/(K*d),  F_friction = mu * (2*F_preload)",
+        "inputs": {
+          "T": [
+            1.2,
+            "N*m"
+          ],
+          "K": [
+            0.2,
+            "-"
+          ],
+          "d": [
+            3.0,
+            "mm"
+          ],
+          "mu": [
+            0.15,
+            "-"
+          ]
+        },
+        "applied": 10.2969825,
+        "allowable": 599.9999999999999,
+        "unit": "N",
+        "target_sf": 2.0,
+        "safety_factor": 58.26949788445303,
+        "passes": true,
+        "note": "The nut factor K is uncertain by roughly +/-30% for a lightly lubricated joint. This check should be confirmed by a pull-test on the real assembly, not trusted on the calculation alone."
+      },
+      {
+        "key": "landing_leg_impact",
+        "title": "Landing leg, 0.5 m drop onto one leg",
+        "formula": "delta = sqrt(2*m*g*h/k),  k = 3*E*I/L^3,  sigma = F*L*c/I",
+        "inputs": {
+          "m": [
+            1473.288214432126,
+            "g"
+          ],
+          "h": [
+            500.0,
+            "mm"
+          ],
+          "w_fuse": [
+            14.0,
+            "mm"
+          ],
+          "t_fuse": [
+            3.6,
+            "mm"
+          ]
+        },
+        "applied": 361.05137036529015,
+        "allowable": 43.199999999999996,
+        "unit": "MPa",
+        "target_sf": 1.5,
+        "safety_factor": 0.11965056373084203,
+        "passes": false,
+        "note": "Allowable is 60% of the PA12-CF datasheet strength to account for layer adhesion in the print direction. This is expected to be the lowest safety factor on the vehicle \u2014 the leg is deliberately the part designed to break. The predicted elastic deflection (126 mm) exceeds the leg's own length (95 mm), so small-deflection beam theory has broken down \u2014 the numeric stress above is not meaningful past this point. The honest conclusion is qualitative: this drop height is well beyond what the leg absorbs elastically, and it yields, which is exactly the intended crash behaviour, just not one a linear model can quantify."
+      }
+    ],
+    "fea": [],
+    "limitations": [
+      "Finite element results (when present) are linear-static on first-order tetrahedra: a screening and comparison tool, not a certification analysis.",
+      "Bolted joints are modelled as fixed restraints \u2014 no contact, preload or friction.",
+      "Composite parts are treated as isotropic, reasonable for the tube in axial bending and wrong in every other direction.",
+      "The point-mass inertia approximation ignores each part's own rotational inertia about its own centre of mass."
+    ]
+  },
+  "story": [
+    {
+      "key": "overview",
+      "title": "AeroFrame X1",
+      "body": "A 450 mm quadcopter airframe, designed entirely in code. Every dimension on this page comes from one parameter file; every mass, stress and safety factor was computed from the same geometry you are looking at.",
+      "isolate": [],
+      "explode": 0.0
+    },
+    {
+      "key": "load_path",
+      "title": "Follow the load path",
+      "body": "Thrust starts at the propeller and ends at the battery's inertia. Prop, motor, machined mount, carbon tube, split clamp, and into the frame box. Every part highlighted here exists to carry that load; everything else exists to hold those parts in place.",
+      "isolate": [
+        "propeller",
+        "motor",
+        "motor_mount",
+        "arm_tube",
+        "arm_clamp_upper",
+        "arm_clamp_lower",
+        "top_plate",
+        "bottom_plate"
+      ],
+      "explode": 0.0
+    },
+    {
+      "key": "arm",
+      "title": "The arm, taken apart",
+      "body": "The tube is never drilled and never bonded. Both ends are held by split clamps that grip on friction, so the joint can be undone in the field and the load-carrying fibres stay intact.",
+      "isolate": [
+        "arm_tube",
+        "motor_mount",
+        "arm_clamp_upper",
+        "arm_clamp_lower"
+      ],
+      "explode": 1.0
+    },
+    {
+      "key": "processes",
+      "title": "Six processes, one airframe",
+      "body": "Machined brackets, folded sheet metal, routed composite plate, printed legs, moulded feet, purchased tube. Each part is made the cheapest way that meets its requirement \u2014 colour-coded here by process.",
+      "isolate": [],
+      "explode": 0.35,
+      "colour_by": "process"
+    },
+    {
+      "key": "analysis",
+      "title": "Does it hold?",
+      "body": "Hand calculations first, finite element second to confirm them. The lowest safety factor on the vehicle is in the landing leg \u2014 by design, because that is the part chosen to break.",
+      "isolate": [
+        "motor_mount",
+        "arm_tube",
+        "landing_leg"
+      ],
+      "explode": 0.0,
+      "show_fea": true
+    }
+  ],
+  "downloads": {}
+}

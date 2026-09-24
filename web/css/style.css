@@ -1,0 +1,286 @@
+/* AeroFrame X1 — presentation layer.
+ *
+ * Deliberately dark and quiet. The model is the content; the interface
+ * should be legible and then get out of the way. No framework, no build
+ * step: the whole site is static files that GitHub Pages serves as-is.
+ */
+
+:root {
+  --bg:          #0e1013;
+  --bg-panel:    #15181d;
+  --bg-raised:   #1c2027;
+  --line:        #2a2f37;
+  --text:        #e6e9ee;
+  --text-dim:    #9aa3ae;
+  --text-faint:  #6b7480;
+  --accent:      #4da3ff;
+  --accent-dim:  #2b6fb3;
+  --warn:        #e8b04b;
+  --bad:         #e5645f;
+  --good:        #5cc98c;
+  --radius:      6px;
+  --mono: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; margin: 0 0 .5em; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------------------------------------------------------------- loader */
+
+.loader {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-content: center; gap: 1rem;
+  background: var(--bg);
+  transition: opacity .4s ease;
+}
+.loader.is-done { opacity: 0; pointer-events: none; }
+.loader__bar { width: 240px; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.loader__fill { height: 100%; width: 0; background: var(--accent); transition: width .2s ease; }
+.loader__text { margin: 0; color: var(--text-dim); font-size: .85rem; text-align: center; }
+
+.fallback { max-width: 40rem; margin: 4rem auto; padding: 0 1.5rem; }
+
+/* ---------------------------------------------------------------- topbar */
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; flex-wrap: wrap;
+  padding: .7rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-panel);
+}
+.topbar__title { display: flex; align-items: baseline; gap: .75rem; flex-wrap: wrap; }
+.topbar__title h1 { margin: 0; font-size: 1.05rem; letter-spacing: .02em; }
+.topbar__sub { color: var(--text-faint); font-size: .8rem; }
+
+.topbar__tabs { display: flex; gap: .25rem; flex-wrap: wrap; }
+.tab {
+  background: none; border: 0; cursor: pointer;
+  padding: .4rem .75rem; border-radius: var(--radius);
+  color: var(--text-dim); font: inherit; font-size: .85rem;
+}
+.tab:hover { color: var(--text); background: var(--bg-raised); }
+.tab.is-active { color: var(--text); background: var(--bg-raised); box-shadow: inset 0 -2px 0 var(--accent); }
+
+/* ---------------------------------------------------------------- layout */
+
+.layout { height: calc(100vh - 3.2rem); }
+.view { display: none; height: 100%; }
+.view.is-active { display: grid; }
+
+.view[data-view="model"] { grid-template-columns: 1fr 22rem; }
+@media (max-width: 860px) {
+  .view[data-view="model"] { grid-template-columns: 1fr; grid-template-rows: 55vh 1fr; }
+}
+
+/* ----------------------------------------------------------------- stage */
+
+.stage { position: relative; overflow: hidden; }
+#canvas { display: block; width: 100%; height: 100%; }
+
+.hint {
+  position: absolute; left: 1rem; bottom: 1rem;
+  color: var(--text-faint); font-size: .75rem;
+  pointer-events: none; transition: opacity .5s ease;
+}
+.hint.is-hidden { opacity: 0; }
+
+.stage__reset { position: absolute; right: 1rem; top: 1rem; }
+
+.story {
+  position: absolute; left: 1rem; top: 1rem; max-width: 24rem;
+  padding: 1rem 1.1rem;
+  background: color-mix(in srgb, var(--bg-panel) 92%, transparent);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  backdrop-filter: blur(6px);
+}
+.story.is-hidden { display: none; }
+.story__title { font-size: 1rem; }
+.story__body { margin: 0 0 .9rem; color: var(--text-dim); font-size: .875rem; }
+.story__nav { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.story__dots { display: flex; gap: .3rem; margin: 0 .3rem; }
+.story__dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--line); display: block; }
+.story__dots i.is-active { background: var(--accent); }
+
+.btn {
+  border: 1px solid var(--accent-dim); background: var(--accent-dim);
+  color: #fff; font: inherit; font-size: .8rem;
+  padding: .3rem .8rem; border-radius: var(--radius); cursor: pointer;
+}
+.btn:hover { background: var(--accent); border-color: var(--accent); }
+.btn--ghost { background: none; border-color: var(--line); color: var(--text-dim); }
+.btn--ghost:hover { background: var(--bg-raised); color: var(--text); }
+
+.legend {
+  position: absolute; right: 1rem; bottom: 1rem;
+  display: flex; align-items: center; gap: .5rem;
+  padding: .45rem .7rem;
+  background: color-mix(in srgb, var(--bg-panel) 92%, transparent);
+  border: 1px solid var(--line); border-radius: var(--radius);
+  font-family: var(--mono); font-size: .72rem; color: var(--text-dim);
+}
+/* The [hidden] attribute alone loses to `.legend { display: flex }` in the
+ * cascade (equal specificity, author style wins over the UA default) —
+ * verified in a real browser: the legend stayed visible despite `hidden`.
+ * This rule wins on specificity and actually hides it. */
+.legend[hidden] { display: none; }
+/* Perceptually ordered ramp. Not a rainbow — a rainbow invents boundaries
+ * that are not in the data, which is how FEA plots end up misleading. */
+.legend__ramp {
+  width: 130px; height: 8px; border-radius: 2px;
+  background: linear-gradient(90deg, #440154, #3b528b, #21918c, #5ec962, #fde725);
+}
+.legend__note { color: var(--text-faint); }
+
+/* ----------------------------------------------------------------- panel */
+
+.panel {
+  border-left: 1px solid var(--line);
+  background: var(--bg-panel);
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex; flex-direction: column; gap: 1.1rem;
+}
+@media (max-width: 860px) { .panel { border-left: 0; border-top: 1px solid var(--line); } }
+
+.control label { display: block; font-size: .75rem; color: var(--text-dim); margin-bottom: .35rem; text-transform: uppercase; letter-spacing: .05em; }
+.control__row { display: flex; gap: .3rem; margin-top: .4rem; flex-wrap: wrap; }
+input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+.chip {
+  border: 1px solid var(--line); background: var(--bg-raised);
+  color: var(--text-dim); font: inherit; font-size: .75rem;
+  padding: .22rem .6rem; border-radius: 99px; cursor: pointer;
+}
+.chip:hover { color: var(--text); }
+.chip.is-active { border-color: var(--accent-dim); color: var(--text); background: var(--accent-dim); }
+
+/* ------------------------------------------------------------ part tree */
+
+.tree { display: flex; flex-direction: column; gap: .1rem; font-size: .82rem; }
+.tree__group { margin-top: .6rem; }
+.tree__group > summary {
+  cursor: pointer; color: var(--text-dim); font-size: .72rem;
+  text-transform: uppercase; letter-spacing: .05em; padding: .3rem 0;
+}
+.tree__item {
+  display: flex; align-items: center; gap: .5rem;
+  padding: .25rem .45rem; border-radius: 4px; cursor: pointer;
+}
+.tree__item:hover { background: var(--bg-raised); }
+.tree__item.is-selected { background: var(--accent-dim); }
+.tree__swatch { width: 9px; height: 9px; border-radius: 2px; flex: 0 0 auto; }
+.tree__name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tree__qty { color: var(--text-faint); font-family: var(--mono); font-size: .72rem; }
+.tree__eye { opacity: .35; }
+.tree__item.is-hidden .tree__name { color: var(--text-faint); text-decoration: line-through; }
+
+/* ---------------------------------------------------------- detail panel */
+
+.detail {
+  position: relative;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg-raised); padding: .9rem;
+}
+.detail__close {
+  position: absolute; right: .5rem; top: .35rem;
+  background: none; border: 0; color: var(--text-faint);
+  font-size: 1.1rem; cursor: pointer; line-height: 1;
+}
+.detail__name { font-size: .95rem; margin-bottom: .2rem; }
+.detail__summary { color: var(--text-dim); font-size: .82rem; margin: 0 0 .8rem; }
+.detail__specs {
+  display: grid; grid-template-columns: auto 1fr; gap: .2rem .8rem;
+  margin: 0 0 .9rem; font-size: .8rem;
+}
+.detail__specs dt { color: var(--text-faint); }
+.detail__specs dd { margin: 0; font-family: var(--mono); }
+.detail h4 { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-dim); }
+.detail__notes { margin: 0 0 .8rem; padding-left: 1.1rem; font-size: .82rem; color: var(--text-dim); }
+.detail__notes li { margin-bottom: .35rem; }
+.detail__links { display: flex; gap: .4rem; flex-wrap: wrap; font-size: .78rem; }
+
+/* ------------------------------------------------------------ annotation */
+
+.hotspot {
+  position: absolute; transform: translate(-50%, -50%);
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--text); font-size: .7rem; font-family: var(--mono);
+  display: grid; place-content: center; cursor: pointer;
+}
+.hotspot:hover { background: var(--accent); }
+.hotspot__card {
+  position: absolute; left: 26px; top: -8px; width: 17rem;
+  padding: .7rem .85rem; text-align: left;
+  background: var(--bg-panel); border: 1px solid var(--line);
+  border-radius: var(--radius); font-family: var(--sans); font-size: .8rem;
+}
+.hotspot__card h5 { margin: 0 0 .3rem; font-size: .82rem; }
+.hotspot__card p { margin: 0; color: var(--text-dim); }
+
+/* ------------------------------------------------------ document views */
+
+.doc {
+  max-width: 62rem; margin: 0 auto; padding: 2rem 1.5rem 5rem;
+  overflow-y: auto; width: 100%;
+}
+.doc h2 { font-size: 1.35rem; margin-top: 0; }
+.doc h3 { font-size: 1rem; margin-top: 2rem; }
+.doc p, .doc li { color: var(--text-dim); }
+.doc ul { padding-left: 1.2rem; }
+
+table { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 1rem 0 2rem; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--line); }
+th { color: var(--text-faint); font-weight: 500; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; }
+td.num, th.num { text-align: right; font-family: var(--mono); }
+tr.total td { border-top: 1px solid var(--text-faint); border-bottom: 0; font-weight: 600; color: var(--text); }
+tbody tr:hover { background: var(--bg-panel); }
+
+.sf { font-family: var(--mono); font-weight: 600; }
+.sf--ok   { color: var(--good); }
+.sf--warn { color: var(--warn); }
+.sf--bad  { color: var(--bad); }
+
+/* A calculation card: formula, inputs, result. Used in the analysis view. */
+.calc {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--bg-panel); padding: 1rem 1.1rem; margin-bottom: 1rem;
+}
+.calc__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.calc__formula {
+  font-family: var(--mono); font-size: .85rem; color: var(--text);
+  background: var(--bg); padding: .5rem .7rem; border-radius: 4px;
+  margin: .6rem 0; overflow-x: auto; white-space: pre;
+}
+.calc__inputs { display: flex; flex-wrap: wrap; gap: .3rem .9rem; font-family: var(--mono); font-size: .76rem; color: var(--text-faint); }
+.calc__note { font-size: .8rem; color: var(--text-faint); margin: .6rem 0 0; font-style: italic; }
+
+.caveat {
+  border-left: 2px solid var(--warn); padding: .5rem 0 .5rem .9rem;
+  margin: 1.5rem 0; font-size: .85rem; color: var(--text-dim);
+}
+
+.drawing-card { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-bottom: 1.5rem; }
+.drawing-card img, .drawing-card object { display: block; width: 100%; background: #fff; }
+.drawing-card figcaption { padding: .6rem .9rem; font-size: .8rem; color: var(--text-dim); background: var(--bg-panel); }
+
+@media print {
+  .topbar, .panel, .story, .hint { display: none; }
+  body { background: #fff; color: #000; }
+}

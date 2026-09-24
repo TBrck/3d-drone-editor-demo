@@ -1,0 +1,63 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "drone-demo"
+version = "0.1.0"
+description = "AeroFrame X1 — a parametric quadcopter airframe designed in code, published as an interactive web page."
+readme = "README.md"
+requires-python = ">=3.11,<3.13"
+license = { text = "MIT" }
+
+# Versions below are the ones actually installed and smoke-tested in
+# .venv311 on Python 3.11.7 / Windows. Upper bounds are deliberate: OCCT
+# wheels and the build123d API move together, and an unpinned upgrade of one
+# of them is the most likely way for this build to break silently.
+dependencies = [
+    "build123d==0.11.1",   # CAD kernel wrapper (pulls cadquery-ocp-novtk 7.9.3)
+    "trimesh==5.0.0",      # mesh handling and glTF/GLB writing
+    "numpy==2.4.6",
+    "scipy==1.17.1",       # sparse solver behind scikit-fem
+    "gmsh==4.15.2",        # tet meshing; the wheel bundles the binary
+    "scikit-fem==12.0.2",  # finite element assembly and solve
+    "meshio==5.3.5",       # .msh reader used by scikit-fem
+    "ezdxf==1.4.4",        # DXF flat-pattern export for sheet metal parts
+    "typer==0.27.1",
+    "rich==15.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+    "ruff==0.16.2",
+]
+# The parts & assembly studio (`python -m drone_demo studio`) is a local,
+# login-gated authoring tool -- not part of the published pipeline. Kept as
+# its own extra so `pip install -e .` for the core CAD/CLI workflow never
+# pulls in a web framework.
+studio = [
+    "flask==3.1.3",
+]
+
+[project.scripts]
+drone-demo = "drone_demo.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Geometry tests are slow (each one runs an OCCT rebuild). Mark them so the
+# fast checks can be run alone with: pytest -m "not slow"
+markers = [
+    "slow: rebuilds CAD geometry",
+    "fea: runs a finite element solve",
+]

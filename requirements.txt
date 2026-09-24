@@ -1,0 +1,24 @@
+# Runtime dependencies, pinned to the versions installed and smoke-tested in
+# .venv311 (Python 3.11.7, Windows 11). Install with:
+#
+#     .venv311\Scripts\python.exe -m pip install -r requirements.txt
+#     .venv311\Scripts\python.exe -m pip install -e .
+#
+# Transitive dependencies are intentionally not pinned here; pyproject.toml is
+# the source of truth and this file exists so the environment can be rebuilt
+# without installing the package.
+
+build123d==0.11.1
+trimesh==5.0.0
+numpy==2.4.6
+scipy==1.17.1
+gmsh==4.15.2
+scikit-fem==12.0.2
+meshio==5.3.5
+ezdxf==1.4.4
+typer==0.27.1
+rich==15.0.0
+
+# Development
+pytest==9.1.1
+ruff==0.16.2
