@@ -4,7 +4,7 @@ A 450 mm quadcopter airframe, designed parametrically in Python and published
 as an interactive web page you can rotate, explode and take apart in a
 browser.
 
-**[Open the interactive model →](https://tbrockmeyer.github.io/3d-drone-demo/)**
+**[Open the interactive model →](https://tbrockmeyer.github.io/3d-drone-editor-demo/)**
 *(link goes live once GitHub Pages is enabled on this repo)*
 
 ---
